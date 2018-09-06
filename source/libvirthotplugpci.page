@@ -1,10 +1,11 @@
 Menu="VMs:2"
-Title="Libvirt Hotplug USB"
+Title="Libvirt Hotplug PCI Devices"
 Icon="libvirt.hotplug.usb.png"
 ---
 <?PHP
-/* Copyright 2016, Burhan Shakil 
+/* Copyright 2016, Burhan Shakil
  * Copyright 2018, Dan Landon
+ * Copyright 2018, Ariel Matos
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3,
@@ -24,14 +25,15 @@ if (is_dir('/usr/local/emhttp/plugins/dynamix.vm.manager/classes')) {
 	require_once('/usr/local/emhttp/plugins/dynamix.vm.manager/include/libvirt.php');
 	require_once('/usr/local/emhttp/plugins/dynamix.vm.manager/include/libvirt_helpers.php');
 }
-$arrValidUSBDevices = getValidUSBDevices();
-$uuid = $_GET['uuid'];	
+#$arrValidUSBDevices = getValidUSBDevices();
+$arrValidPCIDevices = getValidPCIDevices();
+$uuid = $_GET['uuid'];
 
 //Get domain variables for each domain
 $doms = $lv->get_domains();
 $vmlist=array();
 
-for ($i = 0; $i < sizeof($doms); $i++) 
+for ($i = 0; $i < sizeof($doms); $i++)
 {
 	global $vmlist;
 	$name = $doms[$i];
@@ -39,7 +41,7 @@ for ($i = 0; $i < sizeof($doms); $i++)
 	$dom = $lv->domain_get_info($res);
 	$state = $lv->domain_state_translate($dom['state']);
 	if($state=='running')
-	{	
+	{
 		global $vmlist;
 		$vmlist[]=array('name'=>$name);
 	}
@@ -51,18 +53,18 @@ function list_vms() {
   return $vmlist;
 }
 
-function list_usbs() 
+function list_usbs()
 {
-  global $arrValidUSBDevices;
+  global $arrValidPCIDevices;
   $out = array();
-  	if (!empty($arrValidUSBDevices)) 
+  	if (!empty($arrValidPCIDevices))
   	{
-  		foreach($arrValidUSBDevices as $i => $arrDev) 
+  		foreach($arrValidPCIDevices as $i => $arrDev)
    		{
    			$out[] = array('name'=>$arrDev['name'],'id'=>$arrDev['id']);
-   		} 
+   		}
   	}
-	else 
+	else
 	{
 		$out[] = array('name'=>"None available");
 	}
@@ -71,9 +73,9 @@ function list_usbs()
 ?>
 
 <script>
-var URL = '/plugins/libvirt.hotplug.usb/include/virshcmd.php';
+var URL = '/plugins/libvirt.hotplug.pci/include/virshcmd.php';
 
-function operateUSB(action) 
+function operateUSB(action)
 {
 	var vms = $("select[name=vms] option:selected").val();
 	var usbs = $("select[name=usbs] option:selected").val();
@@ -86,7 +88,7 @@ function operateUSB(action)
 			case 'attach':
 				status = 'Attaching Please wait...';
 				break;
-		}			
+		}
 		$("textarea[name=Status]").val(status);
 		$("#detach").attr("disabled", true);
 		$("#attach").attr("disabled", true);
@@ -138,9 +140,9 @@ function operateUSB(action)
 		<textarea readonly name="Status" rows="5"></textarea>
 	</div>
 	<div>
-		<p>Select the VM for the USB device to be attached/detached and the USB device for the selected VM.</p>
+		<p>Select the VM for the PCI device to be attached/detached and the PCI device for the selected VM.</p>
 		<p><strong>Note:</strong></p>
-		<p>Some USB Devices require detaching and attaching multiple times to be properly detected by VMs.</p>
+		<p>Some PCI Devices require detaching and attaching multiple times to be properly detected by VMs.</p>
 		<p>If you have disconnected the device while it was attached to a VM, you will have to detach it and then re-attach it.</p>
 	</div>
 </div>

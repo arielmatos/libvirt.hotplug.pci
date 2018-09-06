@@ -1,11 +1,11 @@
 <?xml version='1.0' standalone='yes'?>
 
 <!DOCTYPE PLUGIN [
-<!ENTITY name      "libvirt.hotplug.usb">
-<!ENTITY author    "dlandon">
-<!ENTITY version   "2018.04.08">
-<!ENTITY launch    "VMs/libvirthotplugusb">
-<!ENTITY pluginURL 	"https://github.com/dlandon/libvirt.hotplug.usb/raw/master/libvirt.hotplug.usb.plg">
+<!ENTITY name      "libvirt.hotplug.pci">
+<!ENTITY author    "amatos">
+<!ENTITY version   "2018.09.06">
+<!ENTITY launch    "VMs/libvirthotplugpci">
+<!ENTITY pluginURL 	"https://github.com/arielmatos/libvirt.hotplug.usb/raw/master/libvirt.hotplug.pci.plg">
 <!ENTITY MD5       "c7913ae15e773b2e8dfdc2273c4fd7e3">
 ]>
 
@@ -18,27 +18,6 @@
 <CHANGES>
 ##&name;
 ###&version;
-- Removed help and added to UI.
-- Change icon.
-
-###2018.03.21
-- Update unRAID minimum version check.
-
-###2018.03.11
-- Modifications to webgui, added help, and some code optimizations.
-
-###2018.03.10a
-- Update for unRAID 6.5 VM file structure changes.
-
-###2016.03.13
-- Using libvirt.php for Running VMs 
-- Fix for VM names with spaces
-
-###2016.03.09
-
-- launch and icon fix
-
-###2016.03.06
 
 - initial release for unRAID v6
 
@@ -46,7 +25,8 @@
 
 <!--
 Copyright 2018, Dan Landon
-libvirt usb hot plug addon plugin
+Copyright 2018, Ariel Matos
+libvirt pci hot plug addon plugin
 -->
 
 <!-- The 'version-check' script. -->
@@ -55,12 +35,12 @@ libvirt usb hot plug addon plugin
 <![CDATA[
 <?
   $version = parse_ini_file("/etc/unraid-version");
-  
+
   if ( version_compare($version['version'],"6.1", "<") )
   {
     echo "******************************************************************\n";
     echo "\n";
-    echo "Libvirt Hotplug Usb Requires unRAID version 6.1 or greater to run.\n";
+    echo "Libvirt Hotplug PCI Requires unRAID version 6.1 or greater to run.\n";
     echo "\n";
     echo "******************************************************************\n";
     exit(1);
@@ -87,7 +67,7 @@ rm -f $(ls /boot/config/plugins/&name;/&name;*.tgz 2>/dev/null | grep -v '&versi
 Get the plugin bundle.
 -->
 <FILE Name="/boot/config/plugins/&name;/&name;-&version;.tgz">
-<URL>"https://github.com/dlandon/&name;/raw/master/&name;-&version;.tgz"</URL>
+<URL>"https://github.com/arielmatos/&name;/raw/master/&name;-&version;.tgz"</URL>
 <MD5>&MD5;</MD5>
 </FILE>
 
@@ -116,6 +96,7 @@ echo " &name; has been installed."
 echo " This plugin requires Dynamix webGui to operate"
 echo " Copyright 2016, Burhan Shakil"
 echo " Copyright 2018, Dan Landon"
+echo " Copyright 2018, Ariel Matos"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
