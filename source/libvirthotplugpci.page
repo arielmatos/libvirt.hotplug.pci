@@ -1,4 +1,4 @@
-Menu="VMs:3"
+Menu="VMs:2"
 Title="Libvirt Hotplug PCI Devices"
 Icon="libvirt.hotplug.pci.png"
 ---
@@ -26,7 +26,10 @@ if (is_dir('/usr/local/emhttp/plugins/dynamix.vm.manager/classes')) {
 	require_once('/usr/local/emhttp/plugins/dynamix.vm.manager/include/libvirt_helpers.php');
 }
 //$arrValidUSBDevices = getValidUSBDevices();
-$arrValidPCIDevices = getValidPCIDevices();
+$gpus = getValidGPUDevices();
+$audioDevices = getValidAudioDevices();
+$arrValidPCIDevices = array_merge($gpus, $audioDevices);
+
 $uuid = $_GET['uuid'];
 
 //Get domain variables for each domain
@@ -53,7 +56,7 @@ function list_vms() {
   return $vmlist;
 }
 
-function list_usbs()
+function list_gpus_and_audio_devices()
 {
   global $arrValidPCIDevices;
   $out = array();
@@ -75,11 +78,11 @@ function list_usbs()
 <script>
 var URL = '/plugins/libvirt.hotplug.pci/include/virshcmd.php';
 
-function operateUSB(action)
+function operateDevices(action)
 {
-	var vms = $("select[name=vms] option:selected").val();
-	var usbs = $("select[name=usbs] option:selected").val();
-	if (vms && usbs) {
+	var vms = $("select[name=availableVMs] option:selected").val();
+	var deviceIDs = $("select[name=deviceIDs] option:selected").val();
+	if (vms && deviceIDs) {
 		switch (action) {
 			case 'detach':
 				status = 'Detaching Please wait...';
@@ -95,19 +98,19 @@ function operateUSB(action)
 		var opts = new Object();
 		opts["action"] = action;
 		opts["VMNAME"] = vms;
-		opts["USBID"] = usbs;
+		opts["DEVICEID"] = deviceIDs;
 		$.post(URL,opts).done(function(data){
 			if (data) {
-				$("textarea[name=Status]").val(data.substr(1));
+				$("textarea[name=statusOutput]").val(data.substr(1));
 			}
 			$("#detach").attr("disabled", false);
 			$("#attach").attr("disabled", false);
 		});
 	} else {
 		if (! vms) {
-			$("textarea[name=Status]").val('No VM Selected!');
+			$("textarea[name=statusOutput]").val('No VM Selected!');
 		} else {
-			$("textarea[name=Status]").val('No USB devices!');
+			$("textarea[name=statusOutput]").val('No devices!');
 		}
 	}
 }
@@ -116,37 +119,36 @@ function operateUSB(action)
 <div style="width: 80%; float:left">
 	<p>
 		Running VMs:
-		<select name="vms" size="1">
+		<select name="availableVMs" size="1">
 			<?foreach (list_vms() as $vms):?>
 			<?=mk_option("",$vms['name'],$vms['name'])?>
 			<?endforeach;?>
 		</select>
 
-		PCI Devices:
-		<select name="usbs" size="1">
-			<?foreach (list_usbs() as $usb):?>
-			<?=mk_option("",$usb['id'],$usb['name'])?>
+		Devices (GPUs + Audio):
+		<select name="deviceIDs" size="1">
+			<?foreach (list_gpus_and_audio_devices() as $device):?>
+			<?=mk_option("",$device['id'],$device['name'])?>
 			<?endforeach;?>
 		</select>
 
-		<input type="button" value="Detach" onclick="operateUSB('detach');" id="detach" style="margin-top:0">
-		<input type="button" value="Attach" onclick="operateUSB('attach');" id="attach" style="margin-top:0">
+		<input type="button" value="Detach" onclick="operateDevices('detach');" id="detach" style="margin-top:0">
+		<input type="button" value="Attach" onclick="operateDevices('attach');" id="attach" style="margin-top:0">
 	</p>
 
 	<div>
 		Status:
 	</div>
 	<div>
-		<textarea readonly name="Status" rows="5"></textarea>
+		<textarea readonly name="statusOutput" rows="5"></textarea>
 	</div>
 	<div>
-		<p>Select the VM for the PCI device to be attached/detached and the PCI device for the selected VM.</p>
+		<p>Select the VM for the device to be attached/detached and the device for the selected VM.</p>
 		<p><strong>Note:</strong></p>
-		<p>Some PCI Devices require detaching and attaching multiple times to be properly detected by VMs.</p>
+		<p>Some Devices require detaching and attaching multiple times to be properly detected by VMs.</p>
 		<p>If you have disconnected the device while it was attached to a VM, you will have to detach it and then re-attach it.</p>
 	</div>
 </div>
 <div style="width: 80%; float:left">
 <input type="button" value="Refresh" onclick="refresh()">
 </div>
-

@@ -6,19 +6,33 @@
 
 <?
 $vmname = $_POST['VMNAME'];
-$usbid = $_POST['USBID'];
-$usbstr = '';
-if (!empty($usbid))
+$deviceID = $_POST['DEVICEID'];
+$generatedXML = '';
+
+if (!empty($deviceID))
 {
-	$usbx = explode(':', $usbid);
-	$usbstr .= "<hostdev mode='subsystem' type='usb'>
+	$deviceHexID = explode(':', $deviceID);
+
+	var_dump($deviceHexID);
+
+	$generatedXML = printf("<hostdev mode='subsystem' type='pci' managed='yes'>
+      <driver name='vfio'/>
+      <source>
+        <address domain='0x0000' bus='0x0b' slot='0x00' function='0x0'/>
+      </source>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
+    </hostdev>", $deviceHexID);
+
+	$generatedXML .= "<hostdev mode='subsystem' type='usb'>
 <source>
-<vendor id='0x".$usbx[0]."'/>
-<product id='0x".$usbx[1]."'/>
+<vendor id='0x".$deviceHexID[0]."'/>
+<product id='0x".$deviceHexID[1]."'/>
 </source>
 </hostdev>";
 }
-file_put_contents('/tmp/libvirthotplugpci.xml',$usbstr);
+
+die('DONE');
+file_put_contents('/tmp/libvirthotplugpci.xml',$generatedXML);
 
 switch ($_POST['action']) {
 	case 'detach':
