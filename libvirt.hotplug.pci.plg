@@ -5,7 +5,7 @@
 <!ENTITY author    "amatos">
 <!ENTITY version   "2018.09.06">
 <!ENTITY launch    "VMs/libvirthotplugpci">
-<!ENTITY pluginURL 	"https://github.com/arielmatos/libvirt.hotplug.usb/raw/master/libvirt.hotplug.pci.plg">
+<!ENTITY pluginURL 	"https://github.com/arielmatos/libvirt.hotplug.pci/raw/master/libvirt.hotplug.pci.plg">
 <!ENTITY MD5       "c7913ae15e773b2e8dfdc2273c4fd7e3">
 ]>
 
