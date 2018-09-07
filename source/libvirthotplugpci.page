@@ -1,6 +1,6 @@
 Menu="VMs:2"
 Title="Libvirt Hotplug PCI Devices"
-Icon="libvirt.hotplug.usb.png"
+Icon="libvirt.hotplug.pci.png"
 ---
 <?PHP
 /* Copyright 2016, Burhan Shakil

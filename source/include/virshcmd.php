@@ -1,5 +1,5 @@
 <?PHP
-/* 
+/*
  *  Execute Virsh Command
  */
 ?>
@@ -8,7 +8,7 @@
 $vmname = $_POST['VMNAME'];
 $usbid = $_POST['USBID'];
 $usbstr = '';
-if (!empty($usbid)) 
+if (!empty($usbid))
 {
 	$usbx = explode(':', $usbid);
 	$usbstr .= "<hostdev mode='subsystem' type='usb'>
@@ -18,15 +18,15 @@ if (!empty($usbid))
 </source>
 </hostdev>";
 }
-file_put_contents('/tmp/libvirthotplugusb.xml',$usbstr);
+file_put_contents('/tmp/libvirthotplugpci.xml',$usbstr);
 
 switch ($_POST['action']) {
 	case 'detach':
-		$rc = shell_exec("/usr/sbin/virsh detach-device '$vmname' /tmp/libvirthotplugusb.xml 2>&1");
+		$rc = shell_exec("/usr/sbin/virsh detach-device '$vmname' /tmp/libvirthotplugpci.xml 2>&1");
 		break;
-		
+
 	case 'attach':
-		$rc = shell_exec("/usr/sbin/virsh attach-device '$vmname' /tmp/libvirthotplugusb.xml 2>&1");
+		$rc = shell_exec("/usr/sbin/virsh attach-device '$vmname' /tmp/libvirthotplugpci.xml 2>&1");
 		break;
 }
 

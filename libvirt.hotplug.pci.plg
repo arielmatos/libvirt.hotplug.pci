@@ -2,7 +2,7 @@
 
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "libvirt.hotplug.pci">
-<!ENTITY author    "amatos">
+<!ENTITY author    "arielmatos">
 <!ENTITY version   "2018.09.06">
 <!ENTITY launch    "VMs/libvirthotplugpci">
 <!ENTITY pluginURL 	"https://github.com/arielmatos/libvirt.hotplug.pci/raw/master/libvirt.hotplug.pci.plg">
