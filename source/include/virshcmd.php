@@ -15,13 +15,17 @@ if (!empty($deviceID))
 
 	var_dump($deviceHexID);
 
-	$generatedXML = printf("<hostdev mode='subsystem' type='pci' managed='yes'>
-      <driver name='vfio'/>
-      <source>
-        <address domain='0x0000' bus='0x0b' slot='0x00' function='0x0'/>
-      </source>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
-    </hostdev>", $deviceHexID);
+	if(!empty($deviceHexID[1])) {
+		$deviceAddress = explode('.', $deviceHexID);
+		var_dump($deviceAddress);
+		$generatedXML = sprintf("
+			<hostdev mode='subsystem' type='pci' managed='yes'>
+	      <source>
+	        <address domain='0x0000' bus='0x0b' slot='0x00' function='0x0'/>
+	      </source>
+	    </hostdev>"
+		, $deviceHexID);
+	}
 
 	$generatedXML .= "<hostdev mode='subsystem' type='usb'>
 <source>

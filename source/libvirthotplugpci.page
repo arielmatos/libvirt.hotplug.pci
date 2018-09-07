@@ -64,6 +64,7 @@ function list_gpus_and_audio_devices()
   	{
   		foreach($arrValidPCIDevices as $i => $arrDev)
    		{
+				var_dump($arrDev);
    			$out[] = array('name'=>$arrDev['name'],'id'=>$arrDev['id']);
    		}
   	}
