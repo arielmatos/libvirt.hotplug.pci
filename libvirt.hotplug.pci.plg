@@ -3,10 +3,10 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "libvirt.hotplug.pci">
 <!ENTITY author    "arielmatos">
-<!ENTITY version   "2018.09.06">
+<!ENTITY version   "2018.09.06a">
 <!ENTITY launch    "VMs/libvirthotplugpci">
 <!ENTITY pluginURL 	"https://github.com/arielmatos/libvirt.hotplug.pci/raw/master/libvirt.hotplug.pci.plg">
-<!ENTITY MD5       "94c85cf70b22d8ac08101292607dee5e">
+<!ENTITY MD5       "a3bd02feea327bb7cafe2b8521474215">
 ]>
 
 <PLUGIN name="&name;"
