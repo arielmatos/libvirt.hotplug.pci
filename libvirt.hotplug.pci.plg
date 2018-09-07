@@ -6,7 +6,7 @@
 <!ENTITY version   "2018.09.06">
 <!ENTITY launch    "VMs/libvirthotplugpci">
 <!ENTITY pluginURL 	"https://github.com/arielmatos/libvirt.hotplug.pci/raw/master/libvirt.hotplug.pci.plg">
-<!ENTITY MD5       "d7dd9988751c44bf2064d9f8bfe1aa75">
+<!ENTITY MD5       "10a2789611bda94db67502ed21779483">
 ]>
 
 <PLUGIN name="&name;"
