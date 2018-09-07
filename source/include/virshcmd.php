@@ -16,7 +16,7 @@ if (!empty($deviceID))
 	var_dump($deviceHexID);
 
 	if(!empty($deviceHexID[1])) {
-		$deviceAddress = explode('.', $deviceHexID);
+		$deviceAddress = explode('.', $deviceHexID[1]);
 		var_dump($deviceAddress);
 		$generatedXML = sprintf("
 			<hostdev mode='subsystem' type='pci' managed='yes'>

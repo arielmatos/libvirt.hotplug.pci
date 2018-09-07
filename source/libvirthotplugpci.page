@@ -64,8 +64,7 @@ function list_gpus_and_audio_devices()
   	{
   		foreach($arrValidPCIDevices as $i => $arrDev)
    		{
-				var_dump($arrDev);
-   			$out[] = array('name'=>$arrDev['name'],'id'=>$arrDev['id']);
+   			$out[] = array('name'=>$arrDev['name'],'id'=>$arrDev['id'], 'object' => $arrDev);
    		}
   	}
 	else
@@ -130,6 +129,7 @@ function operateDevices(action)
 		<select name="deviceIDs" size="1">
 			<?foreach (list_gpus_and_audio_devices() as $device):?>
 			<?=mk_option("",$device['id'],$device['name'])?>
+			<?= print_r($device['object']) ?>
 			<?endforeach;?>
 		</select>
 
