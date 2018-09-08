@@ -18,24 +18,24 @@ if (!empty($deviceID))
 	if(!empty($deviceHexID[1])) {
 		$deviceAddress = explode('.', $deviceHexID[1]);
 		var_dump($deviceAddress);
-		$generatedXML = sprintf("
+		$generatedXML = "
 			<hostdev mode='subsystem' type='pci' managed='yes'>
+				<driver name='vfio'/>
 	      <source>
-	        <address domain='0x0000' bus='0x0b' slot='0x00' function='0x0'/>
+	        <address domain='0x0000' bus='0x$deviceHexID[0]' slot='0x$deviceAddress[0]' function='0x$deviceAddress[1]'/>
 	      </source>
-	    </hostdev>"
-		, $deviceHexID);
+	    </hostdev>";
 	}
 
-	$generatedXML .= "<hostdev mode='subsystem' type='usb'>
-<source>
-<vendor id='0x".$deviceHexID[0]."'/>
-<product id='0x".$deviceHexID[1]."'/>
-</source>
-</hostdev>";
+// 	$generatedXML .= "<hostdev mode='subsystem' type='usb'>
+// <source>
+// <vendor id='0x".$deviceHexID[0]."'/>
+// <product id='0x".$deviceHexID[1]."'/>
+// </source>
+// </hostdev>";
 }
 
-die('DONE');
+// die('DONE');
 file_put_contents('/tmp/libvirthotplugpci.xml',$generatedXML);
 
 switch ($_POST['action']) {
